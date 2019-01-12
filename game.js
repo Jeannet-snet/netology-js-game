@@ -5,6 +5,7 @@ class Vector{
       this.x = x;
       this.y = y;
   }
+
   plus(vector) {
 		if (vector instanceof Vector) {
 			return new Vector(vector.x + this.x, vector.y + this.y);
@@ -13,10 +14,12 @@ class Vector{
 			throw new Error ('Можно прибавлять к вектору только вектор типа Vector');
 		}
 	}
+
   times(n){
     return new Vector(this.x * n, this.y * n);
   }
 }
+
 class Actor{
   constructor(pos = new Vector(0,0), size = new Vector(1,1), speed = new Vector(0,0)){
 
@@ -24,12 +27,12 @@ class Actor{
       this.pos = pos;
       this.size = size;
       this.speed = speed;
-
     } else {
       throw new Error('arguments error');
     }
-    this.act = function(){
-    };
+  }
+
+  act() {
   }
 
   get left() {
@@ -63,6 +66,7 @@ class Actor{
     return true;
   }
 }
+
 class Level {
   constructor(grid = [], actors = []) {
       this.grid = grid.slice();
@@ -72,6 +76,7 @@ class Level {
       this.height = this.grid.length;
       this.width = Math.max(0, ...this.grid.map(element => element.length));
   }
+  
   get player() {
     return this.actors.find(actor => actor.type === 'player');
   }
@@ -216,10 +221,10 @@ class Fireball extends Actor{
 
   act(time, level){
     let nextPos = this.getNextPosition(time);
-    if (level.obstacleAt(nextPos, this.size) === undefined){
-      this.pos = nextPos;
-    } else {
+    if (level.obstacleAt(nextPos, this.size) !== undefined){
       this.handleObstacle();
+    } else {
+      this.pos = nextPos;
     }
   }
 }
